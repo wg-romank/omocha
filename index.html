@@ -1,10 +1,24 @@
 <!DOCTYPE html>
 <html>
+<head>
+</head>
+<script type='text/javascript' src='./uil.js'/></script>
 <body>
 
-<h1>My First Heading</h1>
+<script>
+const ui = new UIL.Gui({
+  css: 'left: 0%, top: 50%',
+  w: 1024
+});
 
-<p>My first paragraph.</p>
+ui.add( 'joystick', {
+  name:'joystick',
+  w:512,
+  multiplicator:1,
+  precision:2,
+  mode:1
+});
+</script>
 
 </body>
 </html>

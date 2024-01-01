@@ -14,7 +14,12 @@ def setup_wifi():
     pass
 
 def readfile(fname):
-  return open(fname).read().replace("\n", "")
+  f = open(fname)
+  buf_size = 4096
+  buf = f.read(buf_size)
+  while buf != '':
+    yield buf.replace("\n", "")
+    buf = f.read(buf_size)
 
 def handle(c):
   method, url, version = c.readline().split(b" ")
@@ -34,7 +39,8 @@ def handle(c):
     #c.write("Content-Type: application/octet-stream\r\n")
     #c.write("Content-Disposition: inline\r\n")
     #c.write("\r\n")
-    c.write(readfile(url[1:]))
+    for chunk in readfile(url[1:]):
+       c.write(chunk)
     return
 
   c.write("<!DOCTYPE html><title>Hey Ho</title>")

@@ -1,5 +1,8 @@
 import network
 import socket
+from machine import Pin, PWM
+
+M = PWM(Pin(5), freq=50, duty=0)
 
 def setup_wifi():
   ssid, pw = open('secret').readline().strip().split(';')
@@ -34,19 +37,26 @@ def handle(c):
     if header == b"\r\n":
       break
 
-  if url != b"":
-    #c.write("HTTP/1.0 200 OK\r\n")
-    #c.write("Content-Type: application/octet-stream\r\n")
-    #c.write("Content-Disposition: inline\r\n")
-    #c.write("\r\n")
+  if path == b"/set":
+    print(f"Params {query}")
+    c.write("HTTP/1.0 200 OK\r\n\r\n")
+    return
+
+  if path == b"/on":
+    M.duty(60)
+    c.write("HTTP/1.0 200 OK\r\n\r\n")
+    return
+
+  if path == b"/off":
+    M.duty(0)
+    c.write("HTTP/1.0 200 OK\r\n\r\n")
+    return
+
+  if path != b"":
+    c.write("HTTP/1.0 200 OK\r\n\r\n")
     for chunk in readfile(url[1:]):
        c.write(chunk)
     return
-
-  c.write("<!DOCTYPE html><title>Hey Ho</title>")
-  c.write("<div><p>Text Here</p></div")
-  c.write(f"<div><p>{path}</p></div>")
-  c.write(f"<div><p>{query}</p></div>")
 
 
 def run_server():

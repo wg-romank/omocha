@@ -1,23 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+body {
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  display: flex;
+  position: absolute;
+  margin: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+#joyDiv {
+  width: 200px;
+  height: 200px;
+}
+</style>
 </head>
-<script type='text/javascript' src='./uil.js'/></script>
+<script type='text/javascript' src='./joy.min.js'/></script>
 <body>
+<div id="joyDiv" style="width: 200px; height: 200px;"></div>
 
-<script>
-const ui = new UIL.Gui({
-  css: 'left: 0%, top: 50%',
-  w: 1024
-});
+<script type="text/javascript">
+var joy = new JoyStick("joyDiv");
 
-ui.add( 'joystick', {
-  name:'joystick',
-  w:512,
-  multiplicator:1,
-  precision:2,
-  mode:1
-});
+setInterval(function() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', '/set?x=' + joy.GetX() + "&y=" + joy.GetY());
+  xhr.send();
+  console.log('Stick', joy.GetX(), joy.GetY());
+}, 200);
 </script>
 
 </body>

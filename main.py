@@ -2,7 +2,8 @@ import network
 import socket
 from machine import Pin, PWM
 
-M = PWM(Pin(5), freq=50, duty=0)
+P5_PWM = PWM(Pin(5), freq=50, duty=0)
+P4_PWM = PWM(Pin(4), freq=50, duty=0)
 
 def setup_wifi():
   ssid, pw = open('secret').readline().strip().split(';')
@@ -21,7 +22,7 @@ def readfile(fname):
   buf_size = 4096
   buf = f.read(buf_size)
   while buf != '':
-    yield buf.replace("\n", "")
+    yield buf.replace("\n", "\r\n")
     buf = f.read(buf_size)
 
 def handle(c):
@@ -38,23 +39,23 @@ def handle(c):
       break
 
   if path == b"/set":
-    print(f"Params {query}")
+    params = query.split(b'&')
+    for p in params:
+      key, value = p.split(b'=')
+      int_part = int(value)
+
+      if key == b'p4':
+        P4_PWM.duty(int_part)
+      if key == b'p5':
+        P5_PWM.duty(int_part)
+
     c.write("HTTP/1.0 200 OK\r\n\r\n")
     return
 
-  if path == b"/on":
-    M.duty(60)
-    c.write("HTTP/1.0 200 OK\r\n\r\n")
-    return
-
-  if path == b"/off":
-    M.duty(0)
-    c.write("HTTP/1.0 200 OK\r\n\r\n")
-    return
 
   if path != b"":
     c.write("HTTP/1.0 200 OK\r\n\r\n")
-    for chunk in readfile(url[1:]):
+    for chunk in readfile(path[1:]):
        c.write(chunk)
     return
 

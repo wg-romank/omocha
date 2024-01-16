@@ -27,11 +27,31 @@ body {
 <script type="text/javascript">
 var joy = new JoyStick("joyDiv");
 
+const toDuty = dut => {
+   // clamping just to be sure
+   var scaled = Math.min(1, Math.max(0, (dut + 1) / 2)); // [0, 1]
+   return Math.round(scaled * 50);    // [0, 50] servo range checked manually
+};
+
 setInterval(function() {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', '/set?x=' + joy.GetX() + "&y=" + joy.GetY());
+  var x = joy.GetX();
+  var y = joy.GetY();
+
+  var left = y / 100;
+  var right = y / 100;
+
+  var alpha = (x / 100 + 1) / 2;
+
+  var pLeft = alpha * left;
+  var pRight = (1 - alpha) * right;
+
+  var dutyLeft = toDuty(pLeft);
+  var dutyRight = toDuty(-pRight); // servo is inverted
+
+  xhr.open('GET', '/set?p4=' + dutyLeft + "&p5=" + dutyRight);
   xhr.send();
-  console.log('Stick', joy.GetX(), joy.GetY());
+  console.log('Duty (l/r)', dutyLeft, dutyRight);
 }, 200);
 </script>
 

@@ -8,6 +8,16 @@ Communication is done through WiFi. Wifi Configuration is stored in flash memory
 <ssid>;<password>
 ```
 
+Web UI is using [JoyStick](https://github.com/bobboteck/JoyStick/) minimalistic JavaScript library for joystick controller. Remote control logic is implemented on the client side to reduce amount of computation on the microcontroller as well as to make prototyping new UIs easier without need to re-flash the board.
+
+Webserver is exposing single main endpoint
+
+```bash
+/set=?p4=<duty_p4>&p5=<duty_p5>
+```
+
+That sets respective duty values to control connected servos. Duty cycle calculation is also running on UI.
+
 List of hardware:
 
 - 1 x NodeMCU Esp-8266
@@ -44,3 +54,10 @@ make
 ```
 
 Tested with MicroPython build v1.18
+
+## Future work
+
+- Use web-sockets for control
+  - currently UI makes HTTP request once every 200ms which is sub-optimal
+- More sensors and full autonomy
+- Wireless charging

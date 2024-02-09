@@ -12,7 +12,7 @@ graph G {
   TP4056:OUT1 -- Boost:IN1[color="red"]
   TP4056:OUT2:s -- Boost:IN2:n
   
-  ESP8266 [ shape=record label="{ { <A9> A9 | <A10> A10} | ESP8266 | { <VIN> VIN | <GND> GND  } }"];
+  ESP8266 [ shape=record label="{ { <A9> D1 | <A10> D2 } | ESP8266 | { <VIN> VIN | <GND> GND  } }"];
   
   ESP8266:VIN -- Boost:OUT1[color="red"]
   ESP8266:GND -- Boost:OUT2

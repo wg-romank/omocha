@@ -38,7 +38,11 @@ Wiring diagram
 To build & flash firmware (MicroPython)
 
 ```bash
-esptool.py --port /dev/ttyUSB0 --baud 115200 write_flash --verify --flash_size=4MB -fm dout 0 /path/to/esp-rom.bin
+esptool.py \
+  --port /dev/ttyUSB0 \
+  --baud 115200 write_flash \
+  --verify --flash_size=4MB -fm dout 0 \
+  /path/to/esp-rom.bin
 ```
 
 To wipe the board

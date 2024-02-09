@@ -1,0 +1,37 @@
+graph G {
+    
+  Lipo [ shape=record label="{ <OUT> - | <IN> + } | LiPo 3.7v " ];
+
+  TP4056 [ shape=record label="{ <BIN> b+ | <BOUT> b- } | TP4056 | {  <OUT1> out+  | <OUT2> out-}"];
+  
+  TP4056:BIN -- Lipo:IN[color="red"]
+  TP4056:BOUT -- Lipo:OUT
+  
+  Boost [ shape=record label="{ { <IN2> in- | <IN1> in+ } | Boost Converter (v8) } | { <OUT1> out+ | <OUT2> out- }"];
+  
+  TP4056:OUT1 -- Boost:IN1[color="red"]
+  TP4056:OUT2:s -- Boost:IN2:n
+  
+  ESP8266 [ shape=record label="{ { <A9> A9 | <A10> A10} | ESP8266 | { <VIN> VIN | <GND> GND  } }"];
+  
+  ESP8266:VIN -- Boost:OUT1[color="red"]
+  ESP8266:GND -- Boost:OUT2
+  
+  Buck [ shape=record label="{ { <OUT1> out+ | <OUT2> out- } | DC-DC 360 (6v) | { <IN1> in+ | <IN2> in- } }"];
+  
+  Buck:IN1 -- Boost:OUT1[color="red"]
+  Buck:IN2 -- Boost:OUT2
+  
+  ServoL [ shape=record label="{ <PWM> PWM } | Servo (L) | { <IN> + | <OUT> - } " style="rounded"];
+  
+  ServoL:IN -- Buck:OUT1:n[color="red"]
+  ServoL:OUT -- Buck:OUT2
+  ServoL:PWM -- ESP8266:A9[color="orange"]
+  
+  ServoR [ shape=record label="{ <IN> + | <OUT> - } | Servo (R) | { <PWM> PWM } " style="rounded"];
+  
+  ServoR:IN -- Buck:OUT1[color="red"]
+  ServoR:OUT -- Buck:OUT2:n
+  ServoR:PWM -- ESP8266:A10:n[color="orange"]
+  
+}

@@ -33,7 +33,7 @@ Chasis parts were 3D printed in PLA, wheels - in TPU. Bottom parts have higher i
 
 Wiring diagram
 
-<TBD>
+<img src="./wiring.svg"/>
 
 To build & flash firmware (MicroPython)
 

@@ -1,0 +1,10 @@
+graph G {
+  ESP8266[shape="record" label="ESP8266 | { <RX> RX | <TX> TX | <GND> GND | <V> 3v3}"]
+  
+  FTDI[shape="record" label="{ <TXO> TXO | <RXI> RXI | <GND> GND | <VCC> VCC } | FTDI (set to 3v3 mode)"]
+  
+  ESP8266:RX:e -- FTDI:TXO:w
+  ESP8266:TX:e -- FTDI:RXI:w
+  ESP8266:GND:e -- FTDI:GND:w
+  ESP8266:V:e -- FTDI:VCC:w
+}
